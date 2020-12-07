@@ -17,8 +17,6 @@ export class StudentService {
     const student = new Student();
     let user = new User();
     user = createStudentDto.user;
-    // user.firstName = createStudentDto.firstName;
-    // user.lastName = createStudentDto.lastName;
     const userDb = await this.userRepository.save(user);
     student.registrationNumber = createStudentDto.registrationNumber;
     student.user = userDb;
