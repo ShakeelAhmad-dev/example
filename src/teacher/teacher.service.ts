@@ -4,6 +4,7 @@ import { User } from "src/users/user.entity";
 import { Repository } from "typeorm";
 import { CreateTeacherDto } from "./dto/create-teacher.dto";
 import { Teacher } from "./teacher.entity";
+import { DeleteResult } from "typeorm";
 
 @Injectable()
 export class TeacherService {
@@ -15,15 +16,21 @@ export class TeacherService {
 
   async create(createTeacherDto: CreateTeacherDto): Promise<Teacher> {
     const teacher = new Teacher();
-    let user = new User();
-    user = createTeacherDto.user;
-    const userDb = await this.userRepository.save(user);
+    // let user = new User();
+    // user = createTeacherDto.user;
+    // const userDb = await this.userRepository.save(user);
     teacher.cardInfo = createTeacherDto.cardInfo;
-    teacher.user = userDb;
+    // teacher.user = userDb;
     return this.teacherRepository.save(teacher);
   }
 
   async findAll(): Promise<Teacher[]> {
     return this.teacherRepository.find({ relations: ["user"] });
+  }
+  async findone(courseId): Promise<Teacher> {
+    return await this.teacherRepository.findOne({ id: courseId });
+  }
+  async delete(id): Promise<DeleteResult> {
+    return await this.teacherRepository.delete(id);
   }
 }

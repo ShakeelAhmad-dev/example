@@ -1,4 +1,6 @@
-import { Controller, Get, Post ,Body} from "@nestjs/common";
+import { Controller, Get, Post, Body, Param, Delete } from "@nestjs/common";
+import { get } from "http";
+import { DeleteResult } from "typeorm";
 import { CreateStudentDto } from "./dto/create-student.dto";
 import { Student } from "./student.entity";
 import { StudentService } from "./student.service";
@@ -12,19 +14,29 @@ export class StudentController {
   //     return await this.
   // }
 
-  @Get(":id")
-  findStudent(): string {
-    return "student";
-  }
+  // @Get(":id")
+  // findStudent(): string {
+  //   return "student";
+  // }
 
   @Post()
-  createStudent(@Body() createStudentDto:CreateStudentDto):Promise<Student>{
-    return this.studentService.create(createStudentDto)
+  createStudent(@Body() createStudentDto: CreateStudentDto): Promise<Student> {
+    // const sahkeel = createStudentDto["softHouseName"]
+    // console.log(createStudentDto.registrationNumber.length)
+    return this.studentService.create(createStudentDto);
   }
 
   @Get()
-  findAll():Promise<Student[]>{
+  findAll(): Promise<Student[]> {
     return this.studentService.findAll();
   }
-
+  @Get(":id")
+  findOne(@Param("id") id: string) {
+    const result = this.studentService.findone(id);
+    return result;
+  }
+  @Delete(":id")
+  async delete(@Param("id") id): Promise<DeleteResult> {
+    return this.studentService.delete(id);
+  }
 }
